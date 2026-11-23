@@ -222,8 +222,8 @@ export type AnimalWhereInput = {
   ownerId?: Prisma.StringFilter<"Animal"> | string
   createdAt?: Prisma.DateTimeFilter<"Animal"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Animal"> | Date | string
-  owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   alerts?: Prisma.AlertListRelationFilter
+  owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type AnimalOrderByWithRelationInput = {
@@ -237,8 +237,8 @@ export type AnimalOrderByWithRelationInput = {
   ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  owner?: Prisma.UserOrderByWithRelationInput
   alerts?: Prisma.AlertOrderByRelationAggregateInput
+  owner?: Prisma.UserOrderByWithRelationInput
 }
 
 export type AnimalWhereUniqueInput = Prisma.AtLeast<{
@@ -255,8 +255,8 @@ export type AnimalWhereUniqueInput = Prisma.AtLeast<{
   ownerId?: Prisma.StringFilter<"Animal"> | string
   createdAt?: Prisma.DateTimeFilter<"Animal"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Animal"> | Date | string
-  owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   alerts?: Prisma.AlertListRelationFilter
+  owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "tagNumber">
 
 export type AnimalOrderByWithAggregationInput = {
@@ -301,8 +301,8 @@ export type AnimalCreateInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  owner: Prisma.UserCreateNestedOneWithoutAnimalsInput
   alerts?: Prisma.AlertCreateNestedManyWithoutAnimalInput
+  owner: Prisma.UserCreateNestedOneWithoutAnimalsInput
 }
 
 export type AnimalUncheckedCreateInput = {
@@ -329,8 +329,8 @@ export type AnimalUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  owner?: Prisma.UserUpdateOneRequiredWithoutAnimalsNestedInput
   alerts?: Prisma.AlertUpdateManyWithoutAnimalNestedInput
+  owner?: Prisma.UserUpdateOneRequiredWithoutAnimalsNestedInput
 }
 
 export type AnimalUncheckedUpdateInput = {
@@ -725,8 +725,8 @@ export type AnimalSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   ownerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   alerts?: boolean | Prisma.Animal$alertsArgs<ExtArgs>
+  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.AnimalCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["animal"]>
 
@@ -773,8 +773,8 @@ export type AnimalSelectScalar = {
 
 export type AnimalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tagNumber" | "name" | "species" | "breed" | "vaccinationStatus" | "notes" | "ownerId" | "createdAt" | "updatedAt", ExtArgs["result"]["animal"]>
 export type AnimalInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   alerts?: boolean | Prisma.Animal$alertsArgs<ExtArgs>
+  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.AnimalCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AnimalIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -787,8 +787,8 @@ export type AnimalIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type $AnimalPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Animal"
   objects: {
-    owner: Prisma.$UserPayload<ExtArgs>
     alerts: Prisma.$AlertPayload<ExtArgs>[]
+    owner: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1195,8 +1195,8 @@ readonly fields: AnimalFieldRefs;
  */
 export interface Prisma__AnimalClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   alerts<T extends Prisma.Animal$alertsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Animal$alertsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AlertPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

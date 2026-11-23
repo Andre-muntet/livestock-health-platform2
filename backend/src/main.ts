@@ -1,7 +1,7 @@
 import express from "express";
 import { errorMiddleware } from "./packages/error-handler/error-middleware.js";
 import router from "./routes/page.js";
-import { prisma } from "./packages/config/prisma.js";
+import { prisma } from "./packages/prisma/index.js";
 import cors from "cors";
 import dotenv from "dotenv";
 
@@ -35,6 +35,7 @@ app.get("/animals", async (req, res, next) => {
     });
     res.status(200).json(animals);
   } catch (err) {
+    console.dir(err, { depth: null });
     next(err);
   }
 });
@@ -55,6 +56,7 @@ app.post("/animals", async (req, res, next) => {
     });
     res.status(201).json(created);
   } catch (err) {
+    console.dir(err, { depth: null });
     next(err);
   }
 });
@@ -67,6 +69,7 @@ app.get("/alerts", async (req, res, next) => {
     });
     res.status(200).json(alerts);
   } catch (err) {
+    console.dir(err, { depth: null });
     next(err);
   }
 });
@@ -82,7 +85,24 @@ app.get("/health", (req, res) => {
 // Error handling (always after routes)
 app.use(errorMiddleware);
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Backend server running on port ${PORT}`);
-});
+async function start() {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    console.log("Database connected");
+
+    // TEMPORARY DIAGNOSTIC: shows which database and tables the backend really sees.
+    // Delete these three lines once the animals page works.
+    const dbInfo = await prisma.$queryRaw`SELECT current_database() AS db`;
+    const tables = await prisma.$queryRaw`SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'`;
+    console.log("Backend sees:", dbInfo, tables);
+  } catch (error) {
+    console.dir(error, { depth: null }); // shows the real cause instead of [Object]
+    process.exit(1);
+  }
+
+  app.listen(PORT, () => {
+    console.log(`Backend server running on port ${PORT}`);
+  });
+}
+
+start();

@@ -7,12 +7,50 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  FARMER
+  VET
+}
+
 model User {
   id        String   @id @default(uuid())
   cognitoId String   @unique
   name      String
   email     String   @unique
   phone     String?
+  role      Role     @default(FARMER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  animals   Animal[]
+  alerts    Alert[]
+}
+
+model Animal {
+  id                String   @id @default(uuid())
+  tagNumber         String   @unique
+  name              String?
+  species           String
+  breed             String?
+  vaccinationStatus String?
+  notes             String?
+  ownerId           String
+  owner             User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  alerts            Alert[]
+}
+
+model Alert {
+  id        String   @id @default(uuid())
+  title     String
+  message   String
+  severity  String   @default("INFO")
+  resolved  Boolean  @default(false)
+  animalId  String?
+  animal    Animal?  @relation(fields: [animalId], references: [id], onDelete: SetNull)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
 }

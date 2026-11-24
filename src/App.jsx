@@ -529,14 +529,17 @@ function Tracker({ user, onLogout }) {
   const commit = (fn) => setData((d) => ({ ...d, animals: fn(d.animals), pending: online ? d.pending : d.pending + 1 }));
   const patch = (id, fn) => commit((list) => list.map((a) => (a.id === id ? fn(a) : a)));
 
-  // When the connection returns, push queued changes to the server.
+ // When the connection returns, push queued changes to the server.
   // TODO: replace this placeholder with a real call to your API Gateway endpoint.
   useEffect(() => {
     if (online && data.pending > 0) {
-      setData((d) => ({ ...d, pending: 0 }));
-      notify("Back online. Your changes are synced.");
+      const timer = setTimeout(() => {
+        setData((d) => ({ ...d, pending: 0 }));
+        notify("Back online. Your changes are synced.");
+      }, 0);
+      return () => clearTimeout(timer);
     }
-  }, [online]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [online, data.pending, setData]);
 
   const current = animals.find((a) => a.id === view.id);
   const attention = risk.alerts.length + animals.reduce((n, a) => n + dueItems(a).filter((d) => d.days <= SOON_DAYS).length, 0);

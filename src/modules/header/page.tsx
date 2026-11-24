@@ -15,7 +15,7 @@ interface HeaderProps {
   onLogin: () => void;
   onCreateAccount: () => void;
   onLogout: () => void;
-  onSwitchAccount: () => void;
+  onSwitchAccount?: () => void;
 }
 
 const Header = ({
@@ -85,15 +85,19 @@ const Header = ({
             </p>
           </div>
 
-        <button
-        onClick={() => {
-          setIsProfileMenuOpen(false);
-          onSwitchAccount();
-        }}
-        className="w-full px-4 py-2.5 text-left text-sm text-gray-700 transition-colors hover:bg-gray-50"
-      >
-        Switch account
-      </button>
+{onSwitchAccount && (
+                      <button
+                        onClick={() => {
+                          setIsProfileMenuOpen(false);
+                          onSwitchAccount();
+                        }}
+                        className="w-full px-4 py-2.5 text-left text-sm text-gray-700 transition-colors hover:bg-gray-50"
+                      >
+                        Switch account
+                      </button>
+                    )}
+
+       
 
       <button
         onClick={() => {

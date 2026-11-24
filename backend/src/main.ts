@@ -61,6 +61,58 @@ app.post("/animals", async (req, res, next) => {
   }
 });
 
+// Prisma uses error code P2025 when a record to update or delete does not exist
+const isNotFound = (err: unknown) => (err as { code?: string })?.code === "P2025";
+
+// Get one animal
+app.get("/animals/:id", async (req, res, next) => {
+  try {
+    const animal = await prisma.animal.findUnique({ where: { id: req.params.id } });
+    if (!animal) {
+      res.status(404).json({ error: "Animal not found" });
+      return;
+    }
+    res.status(200).json(animal);
+  } catch (err) {
+    console.dir(err, { depth: null });
+    next(err);
+  }
+});
+
+// Edit an animal (only the fields that are sent are changed)
+app.patch("/animals/:id", async (req, res, next) => {
+  try {
+    const { tagNumber, name, species, breed, vaccinationStatus, notes } = req.body;
+    const updated = await prisma.animal.update({
+      where: { id: req.params.id },
+      data: { tagNumber, name, species, breed, vaccinationStatus, notes },
+    });
+    res.status(200).json(updated);
+  } catch (err) {
+    if (isNotFound(err)) {
+      res.status(404).json({ error: "Animal not found" });
+      return;
+    }
+    console.dir(err, { depth: null });
+    next(err);
+  }
+});
+
+// Remove an animal
+app.delete("/animals/:id", async (req, res, next) => {
+  try {
+    await prisma.animal.delete({ where: { id: req.params.id } });
+    res.status(204).send();
+  } catch (err) {
+    if (isNotFound(err)) {
+      res.status(404).json({ error: "Animal not found" });
+      return;
+    }
+    console.dir(err, { depth: null });
+    next(err);
+  }
+});
+
 // Alerts routes
 app.get("/alerts", async (req, res, next) => {
   try {

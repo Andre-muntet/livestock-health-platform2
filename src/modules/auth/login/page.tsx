@@ -100,22 +100,28 @@ console.log("Access token scopes:", payload.scope);
     onSuccess();
 
   } catch (err) {
-    if (err instanceof Error) {
-      if (err.name === "UserNotConfirmedException") {
-        onVerificationRequired(email.trim());
-      } else if (err.name === "UserNotFoundException") {
-        toast.error("No account found with this email address.");
-      } else if (err.name === "NotAuthorizedException") {
-        toast.error("Incorrect email or password.");
+      if (err instanceof Error) {
+        if (err.name === "UserNotConfirmedException") {
+          onVerificationRequired(email.trim());
+        } else if (err.name === "UserNotFoundException") {
+          toast.error("No account found with this email address.");
+        } else if (err.name === "NotAuthorizedException") {
+          toast.error("Incorrect email or password.");
+        } else if (
+          err.name === "UserAlreadyAuthenticatedException" ||
+          err.message.toLowerCase().includes("already signed in")
+        ) {
+          onSuccess();
+        } else {
+          console.error("Sign-in error:", err);
+          toast.error(err.message);
+        }
       } else {
-        console.error("Sign-in error:", err);
-        toast.error(err.message);
+        toast.error("Unable to sign in. Please try again.");
       }
-    } else {
-      toast.error("Unable to sign in. Please try again.");
-    }
-  } finally {
-    setLoading(false);
+    } finally {
+      setLoading(false);
+    
   }
 };
 

@@ -8,11 +8,11 @@ export const router = createBrowserRouter([
     element: <div>Home</div>,
   },
   {
-    path: "/login",
+    path: "modules/login",
     element: <div>Login</div>,
   },
   {
-    path: "/signup",
+    path: "modules/signup",
     element: <div>Signup</div>,
   },
   {

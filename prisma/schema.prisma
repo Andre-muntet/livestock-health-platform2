@@ -13,6 +13,42 @@ model User {
   name      String
   email     String   @unique
   phone     String?
+  role      Role     @default(FARMER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  alerts    Alert[]
+  animals   Animal[]
+}
+
+model Animal {
+  id                String   @id @default(uuid())
+  tagNumber         String   @unique
+  name              String?
+  species           String
+  breed             String?
+  vaccinationStatus String?
+  notes             String?
+  ownerId           String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  alerts            Alert[]
+  owner             User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+}
+
+model Alert {
+  id        String   @id @default(uuid())
+  title     String
+  message   String
+  severity  String   @default("INFO")
+  resolved  Boolean  @default(false)
+  animalId  String?
+  userId    String
+  createdAt DateTime @default(now())
+  animal    Animal?  @relation(fields: [animalId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  FARMER
+  VET
 }

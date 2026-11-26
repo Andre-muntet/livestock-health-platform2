@@ -5,8 +5,8 @@ import App from "../App"
 
 // Import page components
 import Login from "../modules/auth/login/page";
-import Signup from "../modules/auth/Signup/page";
-import Otp from "../modules/auth/Otp/page";
+import Signup from "../modules/auth/signup/page";
+import Otp from "../modules/auth/otp/page";
 
 // Import layouts
 import AppLayout from "../layout/AppLayout";
